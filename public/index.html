@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chatbot Premium Account Manager</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <nav class="topbar">
+        <div class="brand">
+          <div class="brand-icon">🤖</div>
+          <div>
+            <div class="brand-title">Chatbot Premium</div>
+            <div class="brand-sub">Account Manager</div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <span class="badge" id="authBadge">Guest User</span>
+          <div class="avatar" id="avatar">GU</div>
+        </div>
+      </nav>
+
+      <section class="hero card">
+        <div>
+          <h1>Account Manager</h1>
+          <p class="muted">
+            High-end administration and secure bot token management dashboard.
+          </p>
+        </div>
+        <div class="hero-actions">
+          <button id="healthBtn" class="btn">Check Health</button>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="stats">
+          <div class="stat-card">
+            <div class="stat-label">Providers</div>
+            <div class="stat-value" id="statProviders">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Accounts</div>
+            <div class="stat-value" id="statAccounts">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Alerts</div>
+            <div class="stat-value" id="statAlerts">-</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <span class="section-icon">🩺</span>
+          <h2>System Health</h2>
+        </div>
+        <div class="card health-card">
+          <div class="health-left">
+            <div class="status-box">
+              <div class="status-dot"></div>
+              <div class="status-text">LIVE STATUS</div>
+            </div>
+          </div>
+          <div class="health-right">
+            <h3>System Operational</h3>
+            <p class="muted">
+              All bot endpoints and authentication servers are running normally.
+            </p>
+            <button id="healthBtn2" class="btn">Check Health</button>
+            <details class="result">
+              <summary>Response</summary>
+              <pre id="healthOut" class="output"></pre>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <span class="section-icon">🔐</span>
+          <h2>Authentication</h2>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <h3>Bootstrap Admin</h3>
+            <p class="muted">Initialize administrative privileges for new environments.</p>
+            <label>Admin Email <input id="bootEmail" type="email" /></label>
+            <label>Master Password <input id="bootPass" type="password" /></label>
+            <button id="bootstrapBtn" class="btn full">Bootstrap Account</button>
+            <details class="result">
+              <summary>Response</summary>
+              <pre id="authOut" class="output"></pre>
+            </details>
+          </div>
+          <div class="card">
+            <div class="row space-between">
+              <div>
+                <h3>Session Management</h3>
+                <p class="muted">Connect your account to access bot tokens.</p>
+              </div>
+              <span class="pill" id="tokenStatus">Token: none</span>
+            </div>
+            <label>User Email <input id="loginEmail" type="email" /></label>
+            <label>User Password <input id="loginPass" type="password" /></label>
+            <div class="row">
+              <button id="loginBtn" class="btn full">Login</button>
+              <button id="logoutBtn" class="btn btn-secondary full">Logout</button>
+            </div>
+            <div class="row token-row">
+              <span>Token:</span>
+              <code id="tokenLabel">none</code>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <span class="section-icon">🧭</span>
+          <h2>Hướng dẫn sử dụng</h2>
+        </div>
+        <div class="grid">
+          <div class="card steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div>
+                <h4>Bootstrap Admin</h4>
+                <p class="muted">
+                  Nhập <strong>Admin Email</strong> và <strong>Master Password</strong>, bấm
+                  <strong>Bootstrap Account</strong> để tạo tài khoản quản trị đầu tiên.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div>
+                <h4>Đăng nhập</h4>
+                <p class="muted">
+                  Dùng email + mật khẩu vừa tạo, bấm <strong>Login</strong>.
+                  Nếu thành công, trạng thái token sẽ chuyển sang <strong>active</strong>.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div>
+                <h4>Tạo Provider</h4>
+                <p class="muted">
+                  Chọn <strong>Key</strong> (openai/anthropic/google/perplexity),
+                  nhập <strong>API Base URL</strong> và <strong>Chat Path</strong>, rồi bấm
+                  <strong>Create Provider</strong>.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div>
+                <h4>Tạo Account</h4>
+                <p class="muted">
+                  Dán <strong>Provider ID</strong>, nhập <strong>Token</strong> và <strong>Expiry</strong>
+                  (nếu có), bấm <strong>Create Account</strong>.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">5</div>
+              <div>
+                <h4>Test Proxy</h4>
+                <p class="muted">
+                  Chọn <strong>Model</strong>, nhập nội dung, bấm <strong>Call /proxy/chat</strong>.
+                  Nếu bật <strong>Async</strong>, kiểm tra trạng thái job ở dưới.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="card tips">
+            <h3>Mẹo nhanh</h3>
+            <ul>
+              <li><strong>Provider ID</strong> lấy bằng nút <strong>Load Providers</strong>.</li>
+              <li>Token chỉ hiển thị <strong>last4</strong>, full token cần admin.</li>
+              <li>Thử <strong>Async</strong> khi gọi model nặng để tránh timeout.</li>
+              <li>Hãy kiểm tra <strong>Health</strong> nếu proxy lỗi liên tục.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section hidden" id="providersSection">
+        <div class="section-title">
+          <span class="section-icon">🧩</span>
+          <h2>Providers</h2>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <h3>Create</h3>
+            <label>Key
+              <select id="providerKey">
+                <option value="openai_compatible">openai_compatible</option>
+                <option value="openai">openai</option>
+                <option value="anthropic">anthropic</option>
+                <option value="google">google</option>
+                <option value="perplexity">perplexity</option>
+              </select>
+            </label>
+            <label>Name <input id="providerName" /></label>
+            <label>Type
+              <select id="providerType">
+                <option value="api_key">api_key</option>
+                <option value="chat_subscription">chat_subscription</option>
+              </select>
+            </label>
+            <label>Auth Mode
+              <select id="providerAuth">
+                <option value="api_key">api_key</option>
+                <option value="oauth">oauth</option>
+                <option value="session_cookie">session_cookie</option>
+              </select>
+            </label>
+            <label>API Base URL <input id="providerBaseUrl" placeholder="https://api.openai.com" /></label>
+            <label>Chat Path <input id="providerChatPath" placeholder="/v1/chat/completions" /></label>
+            <button id="createProviderBtn" class="btn full">Create Provider</button>
+          </div>
+          <div class="card">
+            <h3>List</h3>
+            <button id="listProvidersBtn" class="btn btn-secondary">Load Providers</button>
+            <details class="result">
+              <summary>Response</summary>
+              <pre id="providersOut" class="output"></pre>
+            </details>
+            <div class="table-wrap">
+              <table class="data-table" id="providersTable">
+                <thead>
+                  <tr>
+                    <th>STT</th>
+                    <th>Name</th>
+                    <th>Key</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Daytime</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section hidden" id="accountsSection">
+        <div class="section-title">
+          <span class="section-icon">🧾</span>
+          <h2>Accounts</h2>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <h3>Create</h3>
+            <label>Provider ID <input id="accountProviderId" /></label>
+            <label>Label <input id="accountLabel" /></label>
+            <label>Plan <input id="accountPlan" /></label>
+            <label>Token <input id="accountToken" /></label>
+            <label>Expiry (ISO) <input id="accountExpiry" placeholder="2026-12-31T00:00:00.000Z" /></label>
+            <button id="createAccountBtn" class="btn full">Create Account</button>
+          </div>
+          <div class="card">
+            <h3>List</h3>
+            <button id="listAccountsBtn" class="btn btn-secondary">Load Accounts</button>
+            <details class="result">
+              <summary>Response</summary>
+              <pre id="accountsOut" class="output"></pre>
+            </details>
+            <div class="table-wrap">
+              <table class="data-table" id="accountsTable">
+                <thead>
+                  <tr>
+                    <th>STT</th>
+                    <th>Label</th>
+                    <th>Token (last4)</th>
+                    <th>Status</th>
+                    <th>Daytime</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section hidden" id="proxySection">
+        <div class="section-title">
+          <span class="section-icon">⚡</span>
+          <h2>Proxy Test</h2>
+        </div>
+        <div class="card">
+          <label>Model <input id="proxyModel" value="gpt-4o-mini" /></label>
+          <label>Message <input id="proxyMessage" value="Hello" /></label>
+          <label><input type="checkbox" id="proxyAsync" /> Async (queue)</label>
+          <button id="proxyBtn" class="btn">Call /proxy/chat</button>
+          <details class="result">
+            <summary>Response</summary>
+            <pre id="proxyOut" class="output"></pre>
+          </details>
+          <div class="row">
+            <input id="jobId" placeholder="job id" />
+            <button id="jobBtn" class="btn btn-secondary">Check Job</button>
+          </div>
+          <details class="result">
+            <summary>Job Status</summary>
+            <pre id="jobOut" class="output"></pre>
+          </details>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>© 2026 Chatbot Premium Management Tool.</span>
+        <div class="footer-links">
+          <a href="#">Documentation</a>
+          <a href="#">API Keys</a>
+          <a href="#">Support</a>
+        </div>
+      </footer>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

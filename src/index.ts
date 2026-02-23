@@ -1,0 +1,48 @@
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
+import path from "path";
+import { fileURLToPath } from "url";
+import { env } from "./config/env.js";
+import authRoutes from "./routes/auth.js";
+import userRoutes from "./routes/users.js";
+import providerRoutes from "./routes/providers.js";
+import accountRoutes from "./routes/accounts.js";
+import accountAccessRoutes from "./routes/accountAccess.js";
+import usageRoutes from "./routes/usage.js";
+import alertRoutes from "./routes/alerts.js";
+import proxyRoutes from "./routes/proxy.js";
+import { authMiddleware } from "./middleware/auth.js";
+import { requireRole } from "./middleware/requireRole.js";
+import { errorHandler } from "./middleware/errorHandler.js";
+import { startExpiryJob } from "./jobs/expiryJob.js";
+
+const app = express();
+
+app.use(cors({ origin: true, credentials: true }));
+app.use(helmet());
+app.use(express.json({ limit: "1mb" }));
+app.use(morgan("combined"));
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, "../public")));
+
+app.get("/health", (_req, res) => res.json({ ok: true }));
+
+app.use("/auth", authRoutes);
+app.use("/users", authMiddleware, requireRole(["admin"]), userRoutes);
+app.use("/providers", authMiddleware, requireRole(["admin"]), providerRoutes);
+app.use("/accounts", authMiddleware, requireRole(["admin", "manager"]), accountRoutes);
+app.use("/account-access", authMiddleware, requireRole(["admin", "manager"]), accountAccessRoutes);
+app.use("/usage", authMiddleware, requireRole(["admin", "manager"]), usageRoutes);
+app.use("/alerts", authMiddleware, requireRole(["admin", "manager"]), alertRoutes);
+app.use("/proxy", authMiddleware, proxyRoutes);
+
+app.use(errorHandler);
+
+app.listen(env.port, () => {
+  startExpiryJob();
+  console.log(`API listening on ${env.port}`);
+});
